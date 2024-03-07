@@ -1,0 +1,51 @@
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+public: 
+    bool sameFreq(string s) {
+        // Count the frequency of each character
+        unordered_map<char, int> freq;
+        for (char c : s) {
+            freq[c]++;
+        }
+        
+        // Count the frequency counts
+        unordered_map<int, int> freq_counts;
+        for (const auto& pair : freq) {
+            freq_counts[pair.second]++;
+        }
+        
+        // If there is only one distinct frequency, return true
+        if (freq_counts.size() == 1) {
+            return true;
+        }
+        
+        // If there are more than two distinct frequencies, return false
+        if (freq_counts.size() > 2) {
+            return false;
+        }
+        
+        // If there are exactly two distinct frequencies
+        // Check if removing one character can make the frequencies equal
+        auto it = freq_counts.begin();
+        int first_freq = it->first;
+        int second_freq = (++it)->first;
+        
+        if (abs(first_freq - second_freq) == 1 && (freq_counts.begin()->second == 1 || (++freq_counts.begin())->second == 1)) {
+            return true;
+        }
+        
+        if (first_freq == 1 && freq_counts[first_freq] == 1) {
+            return true;
+        }
+        
+        if (second_freq == 1 && freq_counts[second_freq] == 1) {
+            return true;
+        }
+        
+        return false;
+    }
+};
