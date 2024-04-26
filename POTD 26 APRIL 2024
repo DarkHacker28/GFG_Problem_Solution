@@ -1,0 +1,41 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> FindExitPoint(int n, int m, vector<vector<int>>& matrix) {
+        // Direction vectors: right, down, left, up
+        vector<pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        
+        // Initial position and direction
+        int i = 0, j = 0;
+        int direction = 0;  // Start moving towards the right
+        
+        while (i >= 0 && i < n && j >= 0 && j < m) {
+            if (matrix[i][j] == 1) {
+                // Change direction to the right
+                direction = (direction + 1) % 4;
+                matrix[i][j] = 0;  // Mark the cell as visited
+            }
+            
+            // Move in the current direction
+            i += directions[direction].first;
+            j += directions[direction].second;
+        }
+        
+        // Since we exit the loop when we're out of bounds,
+        // we need to adjust the position
+        if (i == n) {
+            i = n - 1;
+        } else if (i < 0) {
+            i = 0;
+        }
+        if (j == m) {
+            j = m - 1;
+        } else if (j < 0) {
+            j = 0;
+        }
+        
+        return {i, j};
+    }
+};
