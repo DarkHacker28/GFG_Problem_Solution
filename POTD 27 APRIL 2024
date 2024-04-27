@@ -1,0 +1,68 @@
+/* Structure of the node of the list is as
+struct Node
+{
+    int data;
+    struct Node *next, *prev;
+    Node (int x){
+        data = x;
+        next = prev = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    // Function to merge two sorted doubly linked lists.
+    Node* merge(Node* left, Node* right) {
+        if (!left) return right;
+        if (!right) return left;
+
+        if (left->data <= right->data) {
+            left->next = merge(left->next, right);
+            left->next->prev = left;
+            left->prev = NULL;
+            return left;
+        } else {
+            right->next = merge(left, right->next);
+            right->next->prev = right;
+            right->prev = NULL;
+            return right;
+        }
+    }
+
+    // Function to split the doubly linked list into two halves.
+    void split(Node* head, Node** left, Node** right) {
+        Node* slow = head;
+        Node* fast = head->next;
+
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        *left = head;
+        *right = slow->next;
+        slow->next->prev = NULL;
+        slow->next = NULL;
+    }
+
+    // Function to perform Merge Sort on the doubly linked list.
+    Node* mergeSort(Node* head) {
+        if (!head || !head->next) return head;
+
+        Node* left;
+        Node* right;
+
+        split(head, &left, &right);
+
+        left = mergeSort(left);
+        right = mergeSort(right);
+
+        return merge(left, right);
+    }
+
+    // Function to sort the given doubly linked list using Merge Sort.
+    Node* sortDoubly(Node* head) {
+        return mergeSort(head);
+    }
+};
