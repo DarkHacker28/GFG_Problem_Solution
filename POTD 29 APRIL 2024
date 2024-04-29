@@ -1,0 +1,65 @@
+/* Link list Node 
+
+struct Node
+{
+    int data;
+    struct Node* next;
+    
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+    
+};
+*/
+
+/*You are required to complete this method*/
+
+/* Function to get the middle of the linked list*/
+/*K will always be in range */
+
+/* Link list Node */
+
+class Solution {
+    public:
+    Node* deleteK(Node *head,int K){
+        // If head is NULL or K is 0, return head
+        if (!head || K == 0) {
+            return head;
+        }
+        
+        // Handle special case when K is 1 (delete every node)
+        if (K == 1) {
+            return NULL;
+        }
+        
+        Node *current = head;
+        Node *prev = NULL;
+        int count = 1;
+        
+        while (current) {
+            // If the count is a multiple of K, skip the current node
+            if (count % K == 0) {
+                // If previous node exists, adjust its next pointer to skip the current node
+                if (prev) {
+                    prev->next = current->next;
+                    delete current; // Free the memory of the current node
+                    current = prev->next; // Move current to the next node
+                } else {
+                    // If previous node doesn't exist, update head to skip the current node
+                    Node *temp = current;
+                    head = current->next;
+                    delete temp; // Free the memory of the current node
+                    current = head; // Move current to the next node
+                }
+            } else {
+                // Move to the next node
+                prev = current;
+                current = current->next;
+            }
+            count++;
+        }
+        
+        return head;
+    }
+};
