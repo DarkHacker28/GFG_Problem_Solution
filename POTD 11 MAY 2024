@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<long long int> jugglerSequence(int n) {
+        vector<long long int> ans = {n};
+        long long int prev = n;
+        while (prev != 1) {
+    if (prev % 2 == 1) { // If odd
+        ans.push_back(sqrt(pow(prev, 3.0))); // Next term is sqrt(prev^3)
+    } else { // If even
+        ans.push_back(sqrt(prev)); // Next term is sqrt(prev)
+    }
+    prev = ans.back(); // Update prev to the last element added to ans
+}
+
+        return ans;
+    }
+};
