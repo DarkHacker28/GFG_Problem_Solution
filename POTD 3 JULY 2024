@@ -1,0 +1,36 @@
+class Solution {
+public:
+    Node* removeAllDuplicates(Node* head) {
+        if (head == nullptr) return nullptr;
+
+        Node* dummy = new Node(0); // Create a dummy node
+        dummy->next = head;
+        Node* prev = dummy;
+        Node* current = head;
+
+        while (current != nullptr) {
+            bool isDuplicate = false;
+
+            // Check for duplicates
+            while (current->next != nullptr && current->data == current->next->data) {
+                current = current->next;
+                isDuplicate = true;
+            }
+
+            if (isDuplicate) {
+                // Skip all duplicates
+                prev->next = current->next;
+            } else {
+                // Move prev pointer
+                prev = current;
+            }
+
+            // Move current pointer
+            current = current->next;
+        }
+
+        Node* newHead = dummy->next;
+        delete dummy; // Delete the dummy node
+        return newHead; // Return the head of the modified list
+    }
+};
