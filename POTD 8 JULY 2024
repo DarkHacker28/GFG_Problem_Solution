@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int search(vector<int>& arr, int key) {
+        int start = 0;
+        int end = arr.size() - 1;
+        
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+
+            // Check if mid is the key
+            if (arr[mid] == key) {
+                return mid;
+            }
+
+            // Determine which part is sorted
+            if (arr[start] <= arr[mid]) {
+                // Left part is sorted
+                if (arr[start] <= key && key < arr[mid]) {
+                    end = mid - 1;
+                } else {
+                    start = mid + 1;
+                }
+            } else {
+                // Right part is sorted
+                if (arr[mid] < key && key <= arr[end]) {
+                    start = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+        }
+        
+        // Key not found
+        return -1;
+    }
+};
