@@ -1,0 +1,37 @@
+// arr : given vector of elements
+// target : given sum value
+
+class Solution {
+public:
+    int threeSumClosest(vector<int> arr, int target) {
+        sort(arr.begin(), arr.end());
+        int n = arr.size();
+        int closestSum = INT_MAX;
+        int closestDiff = INT_MAX;
+
+        for (int i = 0; i < n - 2; ++i) {
+            int left = i + 1;
+            int right = n - 1;
+
+            while (left < right) {
+                int sum = arr[i] + arr[left] + arr[right];
+                int diff = abs(target - sum);
+
+                if (diff < closestDiff || (diff == closestDiff && sum > closestSum)) {
+                    closestSum = sum;
+                    closestDiff = diff;
+                }
+
+                if (sum < target) {
+                    ++left;
+                } else if (sum > target) {
+                    --right;
+                } else {
+                    return sum;  // If the exact target is found
+                }
+            }
+        }
+
+        return closestSum;
+    }
+};
