@@ -1,0 +1,32 @@
+/*
+// A Binary Tree node
+class Node{
+    int data;
+    Node left;
+    Node right;
+    Node(int data){
+        this.data = data;
+        left=null;
+        right=null;
+    }
+}
+*/
+class Solution {
+    /* you are required to complete this function */
+    boolean hasPathSum(Node root, int target) {
+        // Base case: If the root is null, there's no path
+        if (root == null) {
+            return false;
+        }
+        
+        // If it's a leaf node, check if the current value equals the target
+        if (root.left == null && root.right == null) {
+            return root.data == target;
+        }
+        
+        // Recur for left and right subtrees with the reduced target sum
+        int newTarget = target - root.data;
+        
+        return hasPathSum(root.left, newTarget) || hasPathSum(root.right, newTarget);
+    }
+}
