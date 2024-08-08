@@ -1,0 +1,43 @@
+/*  Tree node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+// Should return true if tree is Sum Tree, else false
+class Solution {
+  public:
+    // Helper function that returns a pair (sum of subtree, is it a Sum Tree)
+    std::pair<int, bool> isSumTreeHelper(Node* root) {
+        // Base case: empty node
+        if (root == NULL) {
+            return {0, true};
+        }
+
+        // Base case: leaf node
+        if (root->left == NULL && root->right == NULL) {
+            return {root->data, true};
+        }
+
+        // Recursively check left and right subtrees
+        auto left = isSumTreeHelper(root->left);
+        auto right = isSumTreeHelper(root->right);
+
+        // Calculate the sum of the current subtree
+        int leftSum = left.first;
+        int rightSum = right.first;
+        int totalSum = leftSum + rightSum + root->data;
+
+        // Check if current node satisfies the Sum Tree property
+        bool isCurrentSumTree = (root->data == leftSum + rightSum) && left.second && right.second;
+
+        // Return the sum of the current subtree and if it's a Sum Tree
+        return {totalSum, isCurrentSumTree};
+    }
+
+    // Function to check if the tree is a Sum Tree
+    bool isSumTree(Node* root) {
+        return isSumTreeHelper(root).second;
+    }
+};
