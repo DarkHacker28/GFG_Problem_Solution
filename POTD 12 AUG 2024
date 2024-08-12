@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int SumofMiddleElements(vector<int> &arr1, vector<int> &arr2) {
+        int n = arr1.size();
+        // Ensure arr1 is the smaller array
+        if (arr1.size() > arr2.size()) {
+            return SumofMiddleElements(arr2, arr1);
+        }
+        
+        int x = arr1.size();
+        int y = arr2.size();
+        int low = 0, high = x;
+        
+        while (low <= high) {
+            int partitionX = (low + high) / 2;
+            int partitionY = (x + y + 1) / 2 - partitionX;
+            
+            int maxX = (partitionX == 0) ? INT_MIN : arr1[partitionX - 1];
+            int minX = (partitionX == x) ? INT_MAX : arr1[partitionX];
+            
+            int maxY = (partitionY == 0) ? INT_MIN : arr2[partitionY - 1];
+            int minY = (partitionY == y) ? INT_MAX : arr2[partitionY];
+            
+            if (maxX <= minY && maxY <= minX) {
+                // If the combined length is even, return the sum of the two middle elements
+                if ((x + y) % 2 == 0) {
+                    return max(maxX, maxY) + min(minX, minY);
+                } else {
+                    // If the combined length is odd, return the middle element (for completeness, though this case should not be needed here)
+                    return max(maxX, maxY) * 2;
+                }
+            } else if (maxX > minY) {
+                high = partitionX - 1;
+            } else {
+                low = partitionX + 1;
+            }
+        }
+        
+        throw invalid_argument("Input arrays are not sorted.");
+    }
+};
