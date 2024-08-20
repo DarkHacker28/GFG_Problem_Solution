@@ -1,0 +1,99 @@
+/*
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+class Solution {
+  public:
+    // Function to find number of nodes in the tree using inorder traversal
+    static int findNumberOfNodesInTree(Node* root, unordered_map<int, int>& map) {
+        stack<Node*> stk;
+        Node* ptr = root;
+        int ans = 0;
+        
+        while (true) {
+            if (ptr != NULL) {
+                stk.push(ptr);
+                ptr = ptr->left;
+            } else {
+                if (stk.empty()) break;
+                Node* delNode = stk.top(); stk.pop();
+                map[delNode->data] = ans++;
+                ptr = delNode->right;
+            }
+        }
+        return ans;
+    }
+
+    // Recursive function to fill depth array
+    static void fillDepthArr(Node* root, vector<int>& depthArr, unordered_set<int>& set, const unordered_map<int, int>& map) {
+        if (root->left != NULL) {
+            fillDepthArr(root->left, depthArr, set, map);
+            if (set.find(map.at(root->left->data)) == set.end())
+                depthArr[map.at(root->data)] = max(depthArr[map.at(root->data)], depthArr[map.at(root->left->data)] + 1);
+        }
+        if (root->right != NULL) {
+            fillDepthArr(root->right, depthArr, set, map);
+            if (set.find(map.at(root->right->data)) == set.end())
+                depthArr[map.at(root->data)] = max(depthArr[map.at(root->data)], depthArr[map.at(root->right->data)] + 1);
+        }
+    }
+
+    // Function to find minimum time to burn the tree
+    int minTime(Node* root, int target) {
+        unordered_map<int, int> map;
+        int numberOfNodes = findNumberOfNodesInTree(root, map);
+        
+        vector<vector<int>> adj(numberOfNodes);
+        vector<int> parArr(numberOfNodes, -1);
+
+        // Building adjacency list
+        queue<Node*> queue;
+        queue.push(root);
+        while (!queue.empty()) {
+            int sizeOfQueue = queue.size();
+            while (sizeOfQueue-- > 0) {
+                Node* delNode = queue.front(); queue.pop();
+                if (delNode->left != NULL) {
+                    adj[map[delNode->data]].push_back(map[delNode->left->data]);
+                    parArr[map[delNode->left->data]] = map[delNode->data];
+                    queue.push(delNode->left);
+                }
+                if (delNode->right != NULL) {
+                    adj[map[delNode->data]].push_back(map[delNode->right->data]);
+                    parArr[map[delNode->right->data]] = map[delNode->data];
+                    queue.push(delNode->right);
+                }
+            }
+        }
+
+        // Calculating target to root path
+        vector<int> targetToRootPath;
+        int ptr = map[target];
+        while (ptr != -1) {
+            targetToRootPath.push_back(ptr);
+            ptr = parArr[ptr];
+        }
+        reverse(targetToRootPath.begin(), targetToRootPath.end());
+        
+        // Storing path nodes in a set
+        unordered_set<int> targetToRootPathNodesSet(targetToRootPath.begin(), targetToRootPath.end());
+
+        vector<int> depthArr(numberOfNodes, 0);
+        fillDepthArr(root, depthArr, targetToRootPathNodesSet, map);
+
+        int ans = 0;
+        int targetToRootPathSize = targetToRootPath.size();
+        for (int i = 0; i < targetToRootPathSize; ++i) {
+            ans = max(ans, targetToRootPathSize - i - 1 + depthArr[targetToRootPath[i]]);
+        }
+        return ans;
+    }
+};
