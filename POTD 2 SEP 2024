@@ -1,0 +1,63 @@
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+class Solution
+{
+public:
+    // Function to return the minimum cost to reach the bottom
+    // right cell from the top left cell.
+    int minimumCostPath(vector<vector<int>>& grid) 
+    {
+        int n = grid.size();
+        // Directions for moving left, right, up, and down
+        vector<pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        
+        // Priority queue to implement Dijkstra's algorithm (min-heap)
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+        
+        // Distance array to store minimum cost to reach each cell
+        vector<vector<int>> dist(n, vector<int>(n, INT_MAX));
+        
+        // Start from the top-left corner
+        dist[0][0] = grid[0][0];
+        pq.push({grid[0][0], {0, 0}});
+        
+        while (!pq.empty()) 
+        {
+            int cost = pq.top().first;
+            int x = pq.top().second.first;
+            int y = pq.top().second.second;
+            pq.pop();
+            
+            // If we have reached the bottom-right corner
+            if (x == n - 1 && y == n - 1) 
+                return cost;
+            
+            // Explore all 4 possible directions
+            for (auto dir : directions) 
+            {
+                int newX = x + dir.first;
+                int newY = y + dir.second;
+                
+                // Check if the new position is within the grid bounds
+                if (newX >= 0 && newX < n && newY >= 0 && newY < n) 
+                {
+                    int newCost = cost + grid[newX][newY];
+                    
+                    // If a cheaper path to (newX, newY) is found
+                    if (newCost < dist[newX][newY]) 
+                    {
+                        dist[newX][newY] = newCost;
+                        pq.push({newCost, {newX, newY}});
+                    }
+                }
+            }
+        }
+        
+        // If somehow we don't find a path (shouldn't happen with valid input)
+        return -1;
+    }
+};
