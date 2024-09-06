@@ -1,0 +1,20 @@
+class Solution {
+public:
+    // Function to find the sum of contiguous subarray with maximum sum.
+    int maxSubarraySum(vector<int> &arr) {
+        int max_current = arr[0];
+        int max_global = arr[0];
+
+        for (int i = 1; i < arr.size(); i++) {
+            // Update max_current to be the max of current element or
+            // the current element + the previous max_current
+            max_current = max(arr[i], max_current + arr[i]);
+
+            // Update max_global if max_current is greater
+            if (max_current > max_global) {
+                max_global = max_current;
+            }
+        }
+        return max_global;
+    }
+};
