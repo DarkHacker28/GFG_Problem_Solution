@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    void sort012(vector<int>& arr) {
+        int l = 0;
+        int r = arr.size()-1;
+        int m = 0;
+        while(m<=r) {
+            if (arr[m] == 0) {
+                arr[m] = arr[l];
+                arr[l] = 0;
+                l++;
+                m++;
+                
+                
+            }
+            else if (arr[m] ==2) {
+                arr[m] = arr[r];
+                arr[r] = 2;
+                r--;
+            }
+            else m++;
+        }
+      
+    }
+};
