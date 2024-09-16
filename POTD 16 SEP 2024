@@ -1,0 +1,28 @@
+#include <stack>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+  public:
+    int maxLength(string& str) {
+        stack<int> st;
+        st.push(-1);  // Base index to calculate the length of valid parentheses
+        int maxLength = 0;
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str[i] == '(') {
+                st.push(i);  // Push the index of '('
+            } else {
+                st.pop();  // Pop the stack for matching ')'
+                if (!st.empty()) {
+                    maxLength = max(maxLength, i - st.top());
+                } else {
+                    st.push(i);  // Update base index if unmatched ')'
+                }
+            }
+        }
+
+        return maxLength;
+    }
+};
