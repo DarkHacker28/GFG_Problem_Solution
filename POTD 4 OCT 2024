@@ -1,0 +1,46 @@
+class Solution {
+  public:
+    Node* reverse(Node* head) {
+        if (head == nullptr || head->next == head)
+            return head;
+        
+        Node* curr = head;
+        Node* prev = nullptr;
+        Node* next = nullptr;
+        do {
+            next = curr->next;   
+            curr->next = prev;   
+            prev = curr;       
+            curr = next;         
+        } while (curr != head);   
+        
+        head->next = prev;      
+        return prev;            
+    }
+    Node* deleteNode(Node* head, int key) {
+        if (head == nullptr)
+            return nullptr;
+        if (head->data == key && head->next == head)
+            return nullptr;  
+        if (head->data == key) {
+            Node* temp = head;
+            head->data = head->next->data;  
+            head->next = head->next->next;   
+            delete temp;                    
+            return head;
+        }
+        Node* curr = head->next;
+        Node* prev = head;
+        while (curr != head) {
+            if (curr->data == key) {
+                prev->next = curr->next;   
+                delete curr;               
+                return head;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+        
+        return head;
+    }
+};
