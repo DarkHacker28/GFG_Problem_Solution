@@ -1,0 +1,48 @@
+class Solution {
+
+private:
+    void dfs(vector<vector<char>>& grid, int m, int n, vector<vector<bool>>& vis, int i, int j)
+    {
+        vis[i][j] = true;
+        int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1}, dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+        for(int t = 0; t < 8; t++)
+        {
+            int x = i + dx[t], y = j + dy[t];
+            if(x < 0 || x >= m || y < 0 || y >= n)
+            {
+                continue;
+            }
+            if(vis[x][y] == false)
+            {
+                if(grid[x][y] != 0)
+                {
+                    dfs(grid, m, n, vis, x, y);
+                }
+                else
+                {
+                    vis[x][y] = true;
+                }
+            }
+        }
+    }
+  public:
+    int numIslands(vector<vector<char>>& grid) {
+        // Code here
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<bool>> vis(m, vector<bool>(n, false));
+        int ans = 0;
+        for(int i = 0; i < m; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(vis[i][j] == false && grid[i][j] != 0)
+                {
+                    dfs(grid, m, n, vis, i, j);
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+};
