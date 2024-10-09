@@ -1,0 +1,67 @@
+/*structure of the node of the linked list is as
+
+struct Node
+{
+    int data;
+    Node* right, *down;
+
+    Node(int x){
+        data = x;
+        right = NULL;
+        down = NULL;
+    }
+};
+*/
+
+// function must return the pointer to the first element of the in linked list i.e. that
+// should be the element at arr[0][0]
+class Solution {
+  public:
+    Node* constructLinkedMatrix(vector<vector<int>>& mat) {
+        // code Here
+        int n = mat.size();
+        Node* head = new Node(mat[0][0]);
+        queue<pair<Node*, pair<int,int>>> q;
+        q.push({head, {0, 0}});
+        map<pair<int,int>, Node*> mp;
+        mp[{0,0}] = head;
+        
+        while(!q.empty()) {
+            int size = q.size();
+            for(int i=0; i<size; i++) {
+                auto node = q.front().first;
+                auto x = q.front().second.first;
+                auto y = q.front().second.second;
+                q.pop();
+                
+                Node* newNode;
+                
+                if(x+1 < n) {
+                    if(mp.find({x+1, y}) != mp.end()) {
+                        node -> down = mp[{x+1, y}];
+                    }
+                    else {
+                        newNode = new Node(mat[x+1][y]);
+                        node -> down = newNode;
+                        q.push({newNode, {x+1, y}});
+                        mp[{x+1, y}] = newNode;
+                    }
+                }
+                
+                if(y+1 < n) {
+                    if(mp.find({x, y+1}) != mp.end()) {
+                        node -> right = mp[{x, y+1}];
+                    }
+                    else {
+                        newNode = new Node(mat[x][y+1]);
+                        node -> right = newNode;
+                        q.push({newNode, {x, y+1}});
+                        mp[{x, y+1}] = newNode;
+                    }
+                }
+            }
+        }
+        
+        return head;
+    }
+};
