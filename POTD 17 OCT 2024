@@ -1,0 +1,45 @@
+/*
+struct Node
+{
+    int data;
+    struct Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+
+};
+*/
+
+class Solution {
+  public:
+    // Function to split a linked list into two lists alternately
+    vector<Node*> alternatingSplitList(struct Node* head) {
+        if(head == NULL || head -> next == NULL)
+        {
+            return {head};
+        }
+        
+        vector<Node*> ans;
+        
+        Node* prev = head;
+        Node* curr = head -> next;
+        
+        ans.push_back(prev);
+        ans.push_back(curr);
+        
+        while(prev && curr)
+        {
+            prev -> next = curr -> next;
+            prev = prev -> next;
+            if(curr -> next)
+            {
+                curr -> next = curr -> next -> next;
+                curr = curr -> next;
+            }
+        }
+        
+        return ans;
+    }
+};
