@@ -1,0 +1,43 @@
+class Solution {
+  public:
+    /*Structure of the node of the linled list is as
+
+    struct Node {
+        int data;
+        struct Node* next;
+
+        Node(int x){
+            data = x;
+            next = NULL;
+        }
+    };
+    */
+    // your task is to complete this function
+    // function should return sum of last n nodes
+     int sumOfLastN_Nodes(struct Node* head, int n) {
+        // Code here
+        int length_ll=0;
+        Node *temp=head;
+        if(head==NULL){
+            return 0;
+        }
+        while(temp){
+            temp=temp->next;
+            length_ll++;
+        }
+        int k=length_ll-n;
+        int i=0;
+        Node *t=head;
+        while(i<k){
+            t=t->next;
+            i++;
+        }
+        int ans=0;
+        while(i<length_ll){
+            ans+=t->data;
+            t=t->next;
+            i++;
+        }
+        return ans;
+    }
+};
