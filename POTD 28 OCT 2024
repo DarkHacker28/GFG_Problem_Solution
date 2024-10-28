@@ -1,0 +1,11 @@
+class Solution {
+  public:
+    vector<int> removeDuplicate(vector<int>& arr) {
+        // code here
+        vector<int> ans;
+        for(int n : arr){
+            if(find(ans.begin() ,ans.end() ,n) == ans.end()) ans.push_back(n); 
+        }
+        return ans;
+    }
+};
