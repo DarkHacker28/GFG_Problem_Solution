@@ -1,0 +1,33 @@
+/* a node of the singly linked list
+struct node
+{
+    int data;
+    struct node *next;
+
+    node(int x){
+        data = x;
+        next = NULL;
+    }
+}; */
+
+// Solution class with quickSort function
+class Solution {
+  public:
+    struct Node* quickSort(struct Node* head) {
+        // code here
+        vector<int>tmp;
+        Node* node=head;
+        while(node){
+            tmp.push_back(node->data);
+            node=node->next;
+        }
+        sort(tmp.begin(), tmp.end());
+        node=head;
+        int i=0;
+        while(node){
+            node->data=tmp[i++];
+            node=node->next;
+        }
+        return head;
+    }
+};
