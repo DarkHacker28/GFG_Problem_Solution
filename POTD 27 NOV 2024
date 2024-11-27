@@ -1,0 +1,44 @@
+class Solution {
+  public:
+    // Function to find the smallest positive number missing from the array.
+     int missingNumber(vector<int> &arr) {
+        
+        int mx =0;
+        bool check = false;
+        for(int i =0;i<arr.size();i++)
+        {
+            if(arr[i]>mx)
+            mx = arr[i];
+            if(arr[i]==1)
+            check = true;
+            if(arr[i]<=0)
+            arr[i]=1;
+            
+        }
+        int n = arr.size();
+        if(!check)
+        {
+            return 1;
+        }
+        else
+        {
+            for(int i =0;i<n;i++)
+            {
+                int x  = abs(arr[i]);
+                if(x<=n and arr[x-1]>0)
+                {
+                    arr[x-1]*=-1;
+                }
+            }
+        }
+        for(int i =0;i<n;i++)
+        {
+            if(arr[i]>0)
+            return i+1;
+        }
+        return n+1;
+        
+    }
+
+
+};
