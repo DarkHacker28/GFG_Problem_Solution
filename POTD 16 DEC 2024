@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    int kthElement(vector<int>& a, vector<int>& b, int k) {
+        int n=a.size(), m = b.size();
+        int idx1 = 0, idx2 = 0;
+        int size = 0;
+        while (true){
+            int val1 = idx1 >= n ? INT_MAX : a[idx1];
+            int val2 = idx2 >= m ? INT_MAX : b[idx2];
+            if (val1 < val2){
+                size+=1;
+                idx1+=1;
+                if (size == k) return val1;
+            }
+            else if(val2 < val1){
+                size+=1;
+                idx2+=1;
+                if (size == k) return val2;
+            }
+            else {
+                size+=1;
+                idx1+=1;
+                if (size == k) return val1;
+                size+=1;
+                idx2+=1;
+                if (size == k) return val2;
+            }
+        }
+        return -1;
+    }
+};
+
