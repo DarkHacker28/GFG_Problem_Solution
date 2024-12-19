@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    int kthMissing(vector<int> &arr, int k) {
+        // Your code goes here
+        int n=arr.size();
+        int a=0;
+        for(int i=0;i<n;i++){
+            k-=(arr[i]-a-1);
+            a=arr[i];
+            if(k<=0){
+                return arr[i]+k-1;
+            }
+        }
+        return arr[n-1]+k;
+    }
+};
