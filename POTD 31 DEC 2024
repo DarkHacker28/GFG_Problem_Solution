@@ -1,0 +1,28 @@
+class Solution {
+  public:
+
+    // Function to return length of longest subsequence of consecutive integers.
+    int longestConsecutive(vector<int>& arr) {
+        if (arr.empty()) return 0;
+    
+        map<int, int> mp;
+        for (auto &i : arr)
+            mp[i]++;
+    
+        int c = 1, ans = 0;
+        auto it = mp.begin();
+        int x = it->first;
+    
+        for (auto &i : mp) {
+            if (x + 1 == i.first) {
+                c++;
+            } else {
+                ans = max(ans, c);
+                c = 1; 
+            }
+            x = i.first;
+        }
+        ans = max(ans, c); 
+        return ans;
+    }
+};
