@@ -1,0 +1,49 @@
+
+
+// Class that contains the logic to build the binary tree
+/*
+Definition of the Node class
+class Node {
+public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int x) {
+        data = x;
+        left = NULL;
+        right = NULL;
+    }
+};
+*/
+class Solution {
+    Node *akshu(vector<int> &i,vector<int> &p,unordered_map<int,int> &u,int s,int e, int &t)
+    {
+        if(s>e)
+        {
+            return NULL;
+        }
+        int r = p[t++];
+        Node *root = new Node(r);
+        int ri = u[r];
+       
+        root->left = akshu(i,p,u,s,ri - 1,t);
+        root-> right = akshu(i,p,u,ri + 1,e,t);
+        
+        return root;
+    }
+    
+  public:
+    Node *buildTree(vector<int> &inorder, vector<int> &preorder) 
+    {
+        // Code here
+        unordered_map<int,int>oye;
+        for(int i=0;i<inorder.size();i++)
+        {
+            oye[inorder[i]] = i;
+        }
+        
+        int t = 0;
+        return akshu(inorder,preorder,oye,0,inorder.size()-1,t);
+    }
+};
