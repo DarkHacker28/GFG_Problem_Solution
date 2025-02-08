@@ -1,0 +1,64 @@
+
+/*
+// Tree Node
+class Node {
+  public:
+    int data;
+    Node* left;
+    Node* right;
+
+    // Constructor to initialize a new node
+    Node(int val) {
+        data = val;
+        left = NULL;
+        right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+
+    vector<int> ans;
+    void leftInsert(Node* root){
+        if(root->left!=NULL || root->right!=NULL) ans.push_back(root->data);
+        if(root->left!=NULL) leftInsert(root->left);
+        else if(root->right!=NULL) leftInsert(root->right);
+        else return;
+    }
+    
+    void bottomInsert(Node* root){
+        if(root->left==NULL && root->right==NULL){
+            ans.push_back(root->data);
+        }
+        if(root->left) bottomInsert(root->left);
+        if(root->right) bottomInsert(root->right);
+    }
+    void rightInsert(Node* root){
+        if(root->right!=NULL) rightInsert(root->right);
+        else if(root->left!=NULL) rightInsert(root->left);
+        else return;
+        ans.push_back(root->data);
+    }
+    
+    vector<int> boundaryTraversal(Node *root) {
+        // code here
+        
+        if(root==NULL) return ans;
+        
+        ans.push_back(root->data);
+        
+        if(root->left==NULL && root->right==NULL) return ans;
+        if(root->left!=NULL){
+            leftInsert(root->left);
+        }
+        
+        bottomInsert(root);
+        if(root->right!=NULL){
+            rightInsert(root->right);
+        }
+        
+        
+        return ans;
+    }
+};
