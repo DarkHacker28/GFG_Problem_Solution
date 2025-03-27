@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    int findPlatform(vector<int>& arr, vector<int>& dep) {
+        sort(arr.begin(), arr.end());
+        sort(dep.begin(), dep.end());
+        
+        int n = arr.size();
+        int i = 1;    
+        int j = 0;      
+        int curr = 1;    
+        int ans = 1;     
+        while(i < n && j < n){
+            if(arr[i] <= dep[j]){
+                ++curr;  
+                ++i;    
+            } else {
+                --curr; 
+                ++j;    
+            }
+            ans = max(curr, ans); 
+        }
+        
+        return ans;
+    }
+};
