@@ -1,0 +1,94 @@
+class Solution {
+public:
+    void debug(string s1) {
+        reverse(s1.begin(), s1.end());
+        cout << s1 << " ";
+    }
+
+    string strMul(string &s1, int s2, int gap) {
+        string ans(gap, '0'); 
+        int carry = 0, n = s1.length();
+        
+        for(int i = 0; i < n; ++i) {
+            int temp = ((int)(s1[i] - '0') * s2) + carry;
+            int rem = temp % 10;
+            carry = temp / 10;
+            ans.push_back((char)(rem + '0'));
+        }
+        
+        while(carry > 0) {
+            ans.push_back((char)(carry % 10 + '0'));
+            carry /= 10;
+        }
+        
+        return ans;
+    }
+
+    string strAdd(string &s1, string &s2) {
+        string ans;
+        int carry = 0, n = s1.length(), m = s2.length();
+        int i = 0, j = 0;
+        
+        while(i < n and j < m) {
+            int temp = (s1[i] - '0') + (s2[j] - '0') + carry;
+            ans.push_back((char)(temp % 10 + '0'));
+            carry = temp / 10;
+            ++i; ++j;
+        }
+        
+        while(i < n) {
+            int temp = (s1[i] - '0') + carry;
+            ans.push_back((char)(temp % 10 + '0'));
+            carry = temp / 10;
+            ++i; 
+        }
+        
+        while(j < m) {
+            int temp = (s2[j] - '0') + carry;
+            ans.push_back((char)(temp % 10 + '0'));
+            carry = temp / 10;
+            ++j;
+        }
+        
+        while(carry > 0) {
+            ans.push_back((char)(carry % 10 + '0'));
+            carry /= 10;
+        }
+        
+        return ans;
+    }
+
+    string multiplyStrings(string& s1, string& s2) {
+        int flag1 = 1, flag2 = 1;
+        if(s1[0] == '-') {
+            flag1 = -1;
+            s1 = s1.substr(1);
+        }
+        if(s2[0] == '-') {
+            flag2 = -1;
+            s2 = s2.substr(1);
+        }
+        
+        int n = s1.length(), m = s2.length();
+        reverse(s1.begin(), s1.end());
+        reverse(s2.begin(), s2.end());
+        
+        string ans = "";
+        for(int i = 0; i < m; ++i) {
+            int val = (s2[i] - '0');
+            string temp = strMul(s1, val, i); 
+            ans = strAdd(ans, temp);
+        }
+        
+        reverse(ans.begin(), ans.end());
+        int i = 0;
+        while(i < ans.size() and ans[i] == '0') ++i;
+        ans = ans.substr(i);
+        
+        if(ans.size() == 0) return "0";
+        int prod = flag1 * flag2;
+        if(prod < 0) ans.insert(ans.begin(), '-');
+        
+        return ans;
+    }
+};
