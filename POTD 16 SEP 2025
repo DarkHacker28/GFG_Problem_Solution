@@ -1,0 +1,33 @@
+class Solution {
+  public:
+    
+    int evaluatePostfix(vector<string>& arr) {
+        stack<int> st;
+        string operand = "+-*/^";
+        for(string &s: arr){
+            if(operand.find(s)==string::npos){
+                int tt = stoi(s);
+                st.push(tt);
+            }else{
+                int num2 = st.top(); st.pop();
+                int num1 = st.top(); st.pop();
+                
+                int result = -1;
+                if(s == "+"){
+                    result = num1 + num2;
+                }else if(s == "-"){
+                    result = num1 - num2;
+                }else if(s == "*"){
+                    result = num1 * num2;
+                }else if(s == "/"){
+                    result = num1 / num2;
+                    if ((num1 ^ num2) < 0 && num1 % num2 != 0) result--;
+                }else if(s == "^"){
+                    result = pow(num1,num2);
+                }
+                st.push(result);
+            }
+        }
+        return st.top();
+    }
+};
