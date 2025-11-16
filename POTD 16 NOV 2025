@@ -1,0 +1,22 @@
+class Solution {
+   public:
+    int LCIS(vector<int>& a, vector<int>& b) {
+        int n = a.size(), m = b.size();
+        vector<vector<vector<int>>> dp(
+            n, vector<vector<int>>(m, vector<int>(n + 1, -1)));
+        function<int(int, int, int)> solve = [&](int idx1, int idx2,
+                                                 int pre) -> int {
+            if (idx1 >= n || idx2 >= m) return 0;
+            int preIndex = pre + 1;
+            if (dp[idx1][idx2][preIndex] != -1) return dp[idx1][idx2][preIndex];
+            if (a[idx1] == b[idx2] && (pre == -1 || a[idx1] > a[pre])) {
+                dp[idx1][idx2][preIndex] = 1 + solve(idx1 + 1, idx2 + 1, idx1);
+            } else {
+                dp[idx1][idx2][preIndex] =
+                    max(solve(idx1 + 1, idx2, pre), solve(idx1, idx2 + 1, pre));
+            }
+            return dp[idx1][idx2][preIndex];
+        };
+        return solve(0, 0, -1);
+    }
+};
