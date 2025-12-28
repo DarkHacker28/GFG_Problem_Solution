@@ -1,0 +1,29 @@
+#define ll long long
+
+class Solution {
+  public:
+    bool possibleDonuts(int time_taken,vector<int>& ranks,int n){
+        int total_donuts=0;
+        for(int rank:ranks){
+            int donuts=(sqrt((8*time_taken/rank) + 1) - 1)/2;
+            total_donuts+=donuts;
+        }
+        return total_donuts>=n;
+    }
+  
+    int minTime(vector<int>& ranks, int n) {
+        // code here
+        int m=ranks.size();
+        ll low=1,high=(*min_element(ranks.begin(),ranks.end()))*1ll*n*(n+1)/2;
+        int ans=INT_MAX;
+        while(low<=high){
+            ll mid=low+(high-low)/2;
+            if(possibleDonuts(mid,ranks,n)){
+                ans=(int)mid;
+                high=mid-1;
+            } else low=mid+1;
+        }
+        
+        return ans;
+    }
+};
