@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        
+        int buy = 0;        // pointer for buying day
+        int sell = 1;       // pointer for selling day
+        int maxProfit = 0;
+        
+        while (sell < n) {
+            // If selling price is higher -> calculate profit
+            if (prices[sell] > prices[buy]) {
+                int profit = prices[sell] - prices[buy];
+                maxProfit = max(maxProfit, profit);
+            } 
+            else {
+                // Found smaller price -> better day to buy
+                buy = sell;
+            }
+            
+            sell++;
+        }
+        
+        return maxProfit;
+    }
+};
