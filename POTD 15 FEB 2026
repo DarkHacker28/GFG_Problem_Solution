@@ -1,0 +1,18 @@
+class Solution {                                    // using cpp
+  public:
+    int findMinDiff(vector<int>& a, int m) {
+        // code here
+        int n=a.size();
+        if(m>n)
+            return -1;
+        sort(a.begin(),a.end());
+        int minDiff=INT_MAX;
+        int i,diff;
+        for(i=0;i<=n-m;i++)
+        {
+            diff=a[i+m-1]-a[i];
+            minDiff=min(minDiff,diff);
+        }
+        return minDiff;
+    }
+};       
